@@ -1,10 +1,9 @@
 package com.example.HotelManagment.Repository;
 
-import org.springframework.stereotype.Service;
+import com.example.HotelManagment.Entity.RoomEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-
-
-public interface RoomRepository {
-
-
+@Repository
+public interface RoomRepository extends JpaRepository<RoomEntity, Long> {
 }

@@ -1,7 +1,6 @@
 package com.example.HotelManagment.Controller;
 
 import com.example.HotelManagment.Entity.GuestEntity;
-
 import com.example.HotelManagment.Service.GuestService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,22 +17,28 @@ public class GuestController {
         this.guestService = guestService;
     }
 
-    // Get all guests
     @GetMapping
     public List<GuestEntity> getAllGuests() {
         return guestService.getAll();
     }
 
-    // Add new guest
+    @GetMapping("/{id}")
+    public GuestEntity getGuestById(@PathVariable Long id) {
+        return guestService.getById(id);
+    }
+
     @PostMapping
     public GuestEntity addGuest(@RequestBody GuestEntity guest) {
         return guestService.save(guest);
     }
 
-    // Delete guest by ID
+    @PutMapping("/{id}")
+    public GuestEntity updateGuest(@PathVariable Long id, @RequestBody GuestEntity guest) {
+        return guestService.update(id, guest);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteGuest(@PathVariable Long id) {
         guestService.delete(id);
     }
 }
-

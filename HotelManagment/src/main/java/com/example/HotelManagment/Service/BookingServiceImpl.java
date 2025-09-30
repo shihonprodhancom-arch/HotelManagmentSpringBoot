@@ -1,6 +1,5 @@
 package com.example.HotelManagment.Service;
 
-
 import com.example.HotelManagment.Entity.BookingEntity;
 import com.example.HotelManagment.Repository.BookingRepository;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,10 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingEntity save(BookingEntity booking) {
+        // Ensure non-null fields for new bookings
+        if (booking.getStatus() == null) booking.setStatus("Pending");
+        if (booking.getPaymentMethod() == null) booking.setPaymentMethod("");
+        if (booking.getPaymentInfo() == null) booking.setPaymentInfo("");
         return bookingRepository.save(booking);
     }
 
@@ -41,6 +44,9 @@ public class BookingServiceImpl implements BookingService {
             existingBooking.setCheckInDate(booking.getCheckInDate());
             existingBooking.setCheckOutDate(booking.getCheckOutDate());
             existingBooking.setTotalPrice(booking.getTotalPrice());
+            existingBooking.setStatus(booking.getStatus() != null ? booking.getStatus() : existingBooking.getStatus());
+            existingBooking.setPaymentMethod(booking.getPaymentMethod() != null ? booking.getPaymentMethod() : existingBooking.getPaymentMethod());
+            existingBooking.setPaymentInfo(booking.getPaymentInfo() != null ? booking.getPaymentInfo() : existingBooking.getPaymentInfo());
             return bookingRepository.save(existingBooking);
         }).orElse(null);
     }

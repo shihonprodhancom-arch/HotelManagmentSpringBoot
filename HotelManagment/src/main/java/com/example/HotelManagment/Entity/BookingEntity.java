@@ -1,5 +1,6 @@
 package com.example.HotelManagment.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,9 +23,17 @@ public class BookingEntity {
 
     private String roomNumber;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkInDate;
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate checkOutDate;
 
     private Double totalPrice;
+
+    // New fields
+    private String status; // e.g., Pending, Paid, Cancelled
+    private String paymentMethod; // e.g., Bank, Bkash, Nagad
+
+    @Lob
+    private String paymentInfo; // Store JSON as string (bank details or trxId)
 }
