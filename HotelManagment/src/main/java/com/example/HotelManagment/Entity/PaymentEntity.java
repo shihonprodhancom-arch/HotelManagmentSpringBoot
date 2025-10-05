@@ -1,32 +1,38 @@
 package com.example.HotelManagment.Entity;
 
-
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "payments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "payments")
 public class PaymentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double amount;
+    private String guest;          // Guest name
+    private Double amount;         // Payment amount
+    private String method;         // Cash, Card, Bkash, Nagad
+    private LocalDate date;        // Payment date
 
-    private String method;
+    // Card details (optional)
+    private String bankName;
+    private String cardNumber;
+    private String expiryDate;
 
-    private LocalDateTime paymentDate;
+    // Mobile payment details (optional)
+    private String accountNumber;
+    private String transactionId;
 
-    @ManyToOne
-    @JoinColumn(name = "booking_id", nullable = false)
-    private BookingEntity booking;
+    // Optional booking reference
+    @Column(name = "booking_id", nullable = true)
+    private Long bookingId;        // can be null
 }
-

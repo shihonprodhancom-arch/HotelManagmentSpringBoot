@@ -6,38 +6,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200") // Angular CORS
 @RestController
 @RequestMapping("/api/payments")
-@CrossOrigin(origins = "http://localhost:4200")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private final PaymentService service;
 
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    public PaymentController(PaymentService service) {
+        this.service = service;
     }
 
-    // Get all payments
     @GetMapping
     public List<PaymentEntity> getAllPayments() {
-        return paymentService.getAll();
+        return service.getAllPayments();
     }
 
-    // Add new payment
-    @PostMapping
-    public PaymentEntity addPayment(@RequestBody PaymentEntity payment) {
-        return paymentService.save(payment);
-    }
-
-    // Get payment by ID
     @GetMapping("/{id}")
-    public PaymentEntity getPayment(@PathVariable Long id) {
-        return paymentService.getById(id);
+    public PaymentEntity getPaymentById(@PathVariable Long id) {
+        return service.getPaymentById(id);
     }
 
-    // Delete payment
+    @PostMapping
+    public PaymentEntity createPayment(@RequestBody PaymentEntity payment) {
+        return service.savePayment(payment);
+    }
+
+    @PutMapping("/{id}")
+    public PaymentEntity updatePayment(@PathVariable Long id, @RequestBody PaymentEntity payment) {
+        return service.updatePayment(id, payment);
+    }
+
     @DeleteMapping("/{id}")
     public void deletePayment(@PathVariable Long id) {
-        paymentService.delete(id);
+        service.deletePayment(id);
     }
 }

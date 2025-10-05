@@ -1,5 +1,7 @@
 package com.example.HotelManagment.Controller;
 
+
+
 import com.example.HotelManagment.Entity.RoomEntity;
 import com.example.HotelManagment.Service.RoomService;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/rooms")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")  // Angular default port
 public class RoomController {
 
     private final RoomService roomService;
@@ -17,28 +19,30 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    // Get all rooms
     @GetMapping
     public List<RoomEntity> getAllRooms() {
-        return roomService.getAll();
+        return roomService.getAllRooms();
     }
 
-    // Add new room
-    @PostMapping
-    public RoomEntity addRoom(@RequestBody RoomEntity room) {
-        return roomService.save(room);
-    }
-
-    // Get room by ID
     @GetMapping("/{id}")
-    public RoomEntity getRoom(@PathVariable Long id) {
-        return roomService.getById(id);
+    public RoomEntity getRoomById(@PathVariable Long id) {
+        return roomService.getRoomById(id);
     }
 
-    // Delete room by ID
+    @PostMapping
+    public RoomEntity createRoom(@RequestBody RoomEntity room) {
+        return roomService.createRoom(room);
+    }
+
+    @PutMapping("/{id}")
+    public RoomEntity updateRoom(@PathVariable Long id, @RequestBody RoomEntity room) {
+        return roomService.updateRoom(id, room);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteRoom(@PathVariable Long id) {
-        roomService.delete(id);
+        roomService.deleteRoom(id);
     }
 }
+
 

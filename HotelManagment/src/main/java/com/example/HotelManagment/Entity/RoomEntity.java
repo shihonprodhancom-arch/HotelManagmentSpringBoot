@@ -1,23 +1,27 @@
 package com.example.HotelManagment.Entity;
 
+
+
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "rooms")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "rooms")
 public class RoomEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roomNumber;   // e.g. 101, 202
-    private String type;         // e.g. "Single", "Double", "Suite"
-    private Double pricePerNight;
-    private Boolean available;   // true = available, false = booked
+    private int number;
+    private String type;       // Single, Double, Suite, etc.
+    private String status;     // Available, Occupied
+    private double price;
 }
+
 
