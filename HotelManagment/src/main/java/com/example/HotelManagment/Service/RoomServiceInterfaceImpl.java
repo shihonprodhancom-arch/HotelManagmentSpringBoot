@@ -3,50 +3,49 @@ package com.example.HotelManagment.Service;
 
 
 import com.example.HotelManagment.Entity.RoomEntity;
-import com.example.HotelManagment.Repository.RoomRepository;
+import com.example.HotelManagment.Repository.RoomRepositoryOld;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class RoomServiceImpl implements RoomService {
+public class RoomServiceInterfaceImpl implements RoomServiceInterface {
 
-    private final RoomRepository roomRepository;
+    private final RoomRepositoryOld roomRepositoryOld;
 
-    public RoomServiceImpl(RoomRepository roomRepository) {
-        this.roomRepository = roomRepository;
+    public RoomServiceInterfaceImpl(RoomRepositoryOld roomRepositoryOld) {
+        this.roomRepositoryOld = roomRepositoryOld;
     }
 
     @Override
     public List<RoomEntity> getAllRooms() {
-        return roomRepository.findAll();
+        return roomRepositoryOld.findAll();
     }
 
     @Override
     public RoomEntity getRoomById(Long id) {
-        return roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        return roomRepositoryOld.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
     }
 
     @Override
     public RoomEntity createRoom(RoomEntity room) {
-        return roomRepository.save(room);
+        return roomRepositoryOld.save(room);
     }
 
     @Override
     public RoomEntity updateRoom(Long id, RoomEntity room) {
-        RoomEntity existingRoom = roomRepository.findById(id)
+        RoomEntity existingRoom = roomRepositoryOld.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found"));
         existingRoom.setNumber(room.getNumber());
         existingRoom.setType(room.getType());
         existingRoom.setStatus(room.getStatus());
         existingRoom.setPrice(room.getPrice());
-        return roomRepository.save(existingRoom);
+        return roomRepositoryOld.save(existingRoom);
     }
 
     @Override
     public void deleteRoom(Long id) {
-        roomRepository.deleteById(id);
+        roomRepositoryOld.deleteById(id);
     }
 }
 

@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "payments")
 @Data
@@ -18,21 +16,17 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String guest;          // Guest name
-    private Double amount;         // Payment amount
-    private String method;         // Cash, Card, Bkash, Nagad
-    private LocalDate date;        // Payment date
+    private String guest;
+    private Double amount;
+    private String method;
+    private String date; // keep as String in yyyy-MM-dd format
 
-    // Card details (optional)
+    // Card fields (optional)
     private String bankName;
     private String cardNumber;
     private String expiryDate;
 
-    // Mobile payment details (optional)
+    // Mobile/Online fields (optional)
     private String accountNumber;
     private String transactionId;
-
-    // Optional booking reference
-    @Column(name = "booking_id", nullable = true)
-    private Long bookingId;        // can be null
 }

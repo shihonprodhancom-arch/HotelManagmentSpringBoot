@@ -8,7 +8,7 @@ import com.example.HotelManagment.Entity.RoomEntity;
 
 import java.util.List;
 
-public interface RoomService {
+public interface RoomServiceInterface {
 
     List<RoomEntity> getAllRooms();
 

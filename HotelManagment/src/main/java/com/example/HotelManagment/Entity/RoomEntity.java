@@ -19,8 +19,8 @@ public class RoomEntity {
     private Long id;
 
     private int number;
-    private String type;       // Single, Double, Suite, etc.
-    private String status;     // Available, Occupied
+    private String type;
+    private String status;
     private double price;
 }
 

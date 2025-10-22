@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:4200") // Angular CORS
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
