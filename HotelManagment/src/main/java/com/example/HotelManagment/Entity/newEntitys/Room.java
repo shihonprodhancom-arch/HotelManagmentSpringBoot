@@ -1,26 +1,32 @@
 package com.example.HotelManagment.Entity.newEntitys;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "rooms")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Integer number;
 
-    @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
+    private String type;
+
+
+
     private Integer capacity;
 
     @ElementCollection
@@ -28,30 +34,22 @@ public class Room {
     @Column(name = "service")
     private List<String> services;
 
-    @Column(nullable = false)
     private String image;
+
+    private String status = "Available";
 
     @ManyToOne
     @JoinColumn(name = "room_type_id", nullable = false)
     private RoomGroup roomGroup;
 
-    // Constructors
-    public Room() {}
-
-    public Room(Integer number, Double price, Integer capacity, List<String> services, String image, RoomGroup roomGroup) {
+    // ✅ Custom Constructor (status সহ)
+    public Room(Integer number, Double price, Integer capacity, List<String> services, String image, String status, RoomGroup roomGroup) {
         this.number = number;
         this.price = price;
         this.capacity = capacity;
         this.services = services;
         this.image = image;
+        this.status = status;
         this.roomGroup = roomGroup;
-    }
-
-    public <T> Room(int i, double v, int i1, List<String> list, String s) {
-        this.number = i;
-        this.price = v;
-        this.capacity = i1;
-        this.services = list;
-        this.image = s;
     }
 }

@@ -1,6 +1,5 @@
 package com.example.HotelManagment.Service.NewService;
 
-
 import com.example.HotelManagment.Dto.RoomGroupDTO;
 import com.example.HotelManagment.Entity.newEntitys.Room;
 import com.example.HotelManagment.Entity.newEntitys.RoomGroup;
@@ -18,6 +17,7 @@ public class RoomGroupService {
 
     @Autowired
     private RoomRepository roomRepository;
+
     @Autowired
     private RoomGroupRepository roomGroupRepository;
 
@@ -34,7 +34,7 @@ public class RoomGroupService {
     }
 
     public RoomGroupDTO getRoomGroupByType(String type) {
-        return roomGroupRepository.findByType(type)
+        return roomGroupRepository.findByTypeIgnoreCase(type)
                 .map(RoomGroupDTO::fromEntity)
                 .orElse(null);
     }
@@ -45,48 +45,60 @@ public class RoomGroupService {
         return RoomGroupDTO.fromEntity(saved);
     }
 
-
-
-
-    // ... existing methods ...
-
+    // ✅ Add Room to Group
     @Transactional
     public RoomGroupDTO addRoomToGroup(Long groupId, Room room) {
-        try {
-            RoomGroup roomGroup = roomGroupRepository.findById(groupId)
-                    .orElseThrow(() -> new RuntimeException("Room group not found with id: " + groupId));
+        RoomGroup roomGroup = roomGroupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Room group not found with id: " + groupId));
 
-            if (roomRepository.existsByNumber(room.getNumber())) {
-                throw new RuntimeException("Room number already exists: " + room.getNumber());
-            }
-
-            roomGroup.setRoom(room);
-            RoomGroup saved = roomGroupRepository.save(roomGroup);
-            return RoomGroupDTO.fromEntity(saved);
-        } catch (Exception e) {
-            throw new RuntimeException("Error adding room to group: " + e.getMessage());
+        if (roomRepository.existsByNumber(room.getNumber())) {
+            throw new RuntimeException("Room number already exists: " + room.getNumber());
         }
+
+        roomGroup.addRoom(room);
+        roomGroupRepository.save(roomGroup);
+
+        return RoomGroupDTO.fromEntity(roomGroup);
     }
 
+    // ✅ Remove Room from Group
     @Transactional
     public RoomGroupDTO removeRoomFromGroup(Long groupId, Long roomId) {
-        try {
-            RoomGroup roomGroup = roomGroupRepository.findById(groupId)
-                    .orElseThrow(() -> new RuntimeException("Room group not found with id: " + groupId));
+        RoomGroup roomGroup = roomGroupRepository.findById(groupId)
+                .orElseThrow(() -> new RuntimeException("Room group not found with id: " + groupId));
 
-            Room room = roomRepository.findById(roomId)
-                    .orElseThrow(() -> new RuntimeException("Room not found with id: " + roomId));
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found with id: " + roomId));
 
-            if (!room.getRoomGroup().getId().equals(groupId)) {
-                throw new RuntimeException("Room does not belong to this group");
-            }
-
-            roomGroup.removeRoom(room);
-            roomRepository.delete(room);
-            RoomGroup saved = roomGroupRepository.save(roomGroup);
-            return RoomGroupDTO.fromEntity(saved);
-        } catch (Exception e) {
-            throw new RuntimeException("Error removing room from group: " + e.getMessage());
+        if (!room.getRoomGroup().getId().equals(groupId)) {
+            throw new RuntimeException("Room does not belong to this group");
         }
+
+        roomGroup.removeRoom(room);
+        roomRepository.delete(room);
+        roomGroupRepository.save(roomGroup);
+
+        return RoomGroupDTO.fromEntity(roomGroup);
+    }
+
+    public RoomGroupDTO updateRoomGroup(Long id, RoomGroupDTO roomGroupDTO) {
+        // Check if room group exists
+        RoomGroup existingRoomGroup = roomGroupRepository.findById(id)
+                .orElseThrow(() -> new NullPointerException("RoomGroup not found with id: " + id));
+
+        // Update the fields
+        if (roomGroupDTO.getType() != null && !roomGroupDTO.getType().trim().isEmpty()) {
+            // Check if type already exists (excluding current room group)
+            if (roomGroupRepository.existsByTypeAndIdNot(roomGroupDTO.getType(), id)) {
+                throw new IllegalArgumentException("Room group type already exists: " + roomGroupDTO.getType());
+            }
+            existingRoomGroup.setType(roomGroupDTO.getType());
+        }
+
+        // Save the updated room group
+        RoomGroup updatedRoomGroup = roomGroupRepository.save(existingRoomGroup);
+
+        // Convert to DTO and return
+        return RoomGroupDTO.fromEntity(updatedRoomGroup);
     }
 }
