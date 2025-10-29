@@ -80,7 +80,7 @@ public class Attendance {
     private String status;
 
     private Long staffId;
-
+    private Boolean present = false;
     @Transient
     private String staffName; // optional for frontend display
 

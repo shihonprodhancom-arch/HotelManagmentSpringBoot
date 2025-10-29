@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/services")
-@CrossOrigin(origins = "http://localhost:4200") // Angular frontend
+@CrossOrigin(origins = "http://localhost:4200")
 public class ExtraServiceController {
 
     private final ExtraServiceRepository serviceRepo;
@@ -16,15 +16,20 @@ public class ExtraServiceController {
         this.serviceRepo = serviceRepo;
     }
 
-    // List all services
     @GetMapping
     public List<ExtraService> getAllServices() {
         return serviceRepo.findAll();
     }
 
-    // Add new service
     @PostMapping
     public ExtraService addService(@RequestBody ExtraService service) {
         return serviceRepo.save(service);
     }
+
+    // Delete service
+    @DeleteMapping("/{id}")
+    public void deleteService(@PathVariable Long id) {
+        serviceRepo.deleteById(id);
+    }
+
 }

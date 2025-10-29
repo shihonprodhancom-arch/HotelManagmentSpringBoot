@@ -1,11 +1,13 @@
 package com.example.HotelManagment.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
+import lombok.*;
 import java.time.LocalDateTime;
-@Data
+
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "extra_services")
 public class ExtraService {
     @Id
@@ -17,6 +19,4 @@ public class ExtraService {
     private double price;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
-
 }
