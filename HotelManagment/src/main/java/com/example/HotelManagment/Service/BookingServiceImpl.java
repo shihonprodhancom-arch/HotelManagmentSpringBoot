@@ -187,4 +187,9 @@ public class BookingServiceImpl implements BookingService {
             bookingRepository.deleteById(id);
         }
     }
+
+    @Override
+    public List<BookingEntity> findByRoomNumber(String roomNumber) {
+        return bookingRepository.findByRoomNumber(roomNumber);
+    }
 }

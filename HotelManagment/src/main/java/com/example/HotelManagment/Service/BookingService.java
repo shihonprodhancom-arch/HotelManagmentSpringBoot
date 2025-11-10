@@ -28,4 +28,6 @@ public interface BookingService {
     BookingEntity save(BookingEntity booking);
     BookingEntity update(Long id, BookingEntity booking);
     void delete(Long id);
+
+    List<BookingEntity> findByRoomNumber(String roomNumber);
 }

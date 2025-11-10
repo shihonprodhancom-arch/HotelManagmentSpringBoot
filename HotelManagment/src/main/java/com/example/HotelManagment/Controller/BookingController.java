@@ -93,4 +93,9 @@ public class BookingController {
     public BookingEntity getBookingById(@PathVariable Long id) {
         return bookingService.getById(id);
     }
+
+    @GetMapping("/room/{roomNumber}")
+    public List<BookingEntity> getBookingsByRoom(@PathVariable String roomNumber) {
+        return bookingService.findByRoomNumber(roomNumber);
+    }
 }
